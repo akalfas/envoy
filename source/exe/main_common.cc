@@ -63,7 +63,7 @@ MainCommonBase::MainCommonBase(const OptionsImpl& options, Event::TimeSystem& ti
   case Server::Mode::Serve: {
     configureHotRestarter(*random_generator);
 
-    tls_ = std::make_unique<ThreadLocal::InstanceImpl>();
+    tls1_ = std::make_unique<ThreadLocal::InstanceImpl>();
     Thread::BasicLockable& log_lock = restarter_->logLock();
     Thread::BasicLockable& access_log_lock = restarter_->accessLogLock();
     auto local_address = Network::Utility::getLocalAddress(options_.localAddressIpVersion());
@@ -81,7 +81,7 @@ MainCommonBase::MainCommonBase(const OptionsImpl& options, Event::TimeSystem& ti
 
     server_ = std::make_unique<Server::InstanceImpl>(
         *init_manager_, options_, time_system, local_address, listener_hooks, *restarter_,
-        *stats_store_, access_log_lock, component_factory, std::move(random_generator), *tls_,
+        *stats_store_, access_log_lock, component_factory, std::move(random_generator), *tls1_,
         thread_factory_, file_system_, std::move(process_context));
 
     break;
